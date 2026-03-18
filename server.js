@@ -120,3 +120,9 @@ const DECK = [
 ];
 
 module.exports = { app, server, wss, game, DECK, pickCard, publicPlayers, broadcastAll, broadcastPlayers, sendTo, resetGame, AVATARS, COLORS };
+
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`🃏 Mala Influència — Server running on port ${PORT}`);
+});
