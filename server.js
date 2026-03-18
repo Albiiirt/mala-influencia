@@ -111,7 +111,7 @@ const DECK = [
   {t:'grupo',e:'⚡',txt:'TOTS: Pedra, paper o tisores. Eliminatòria fins que quedi un. El que perd cada ronda beu un glop.',drink:'El guanyador final reparteix un glop extra a qui vulgui.'},
   {t:'grupo',e:'🔥',txt:'"Jo mai": cada jugador diu alguna cosa que mai ha fet. Qui ho hagi fet, beu.',drink:'El que més begui en aquesta ronda ha de justificar-se.'},
   {t:'grupo',e:'⏱️',txt:'TOTS parlen alhora durant 30 segons sobre el mateix tema. El que rigui o pari, beu.',drink:'Tema triat per qui ha tret la carta.',timer:30},
-  {t:'grupo',e:'🌀',txt:'Tots drets. L\'últim a seure quan el jugador actual cridi "ARA" beu doble.',drink:"El que s'avanci al "ARA" també beu."},
+  {t:'grupo',e:'🌀',txt:'Tots drets. L\'últim a seure quan el jugador actual cridi "ARA" beu doble.',drink:"El que s'avanci al \"ARA\" també beu.},
   {t:'grupo',e:'🎵',txt:'El jugador actual tarareja una cançó. El primer a endevinar reparteix un glop.',drink:'Si ningú endevina en 30 segons, el que tarareja beu.',timer:30},
   {t:'grupo',e:'🧩',txt:'Història col·lectiva: cada un afegeix UNA frase en ordre. La història ha de tenir sentit.',drink:'Qui trenqui el fil, beu.',timer:120},
   {t:'grupo',e:'🤝',txt:'Tots han de dir alhora la mateixa paraula espontània. Tres intents.',drink:'Si en tres intents no ho aconseguiu, tots beveu.'},
