@@ -1,11 +1,57 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="refresh" content="0; url=/admin.html">
-<title>Mala Influència</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mala Influència</title>
+  <!-- Si tienes CSS, colócalo aquí -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #121212;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    #app {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 1rem;
+    }
+    h1 { margin-bottom: 1rem; }
+  </style>
 </head>
 <body>
-<script>location.href='/admin.html';</script>
+  <div id="app">
+    <h1>🃏 Mala Influència</h1>
+    <p>Carregant el joc...</p>
+    <!-- Aquí puedes agregar el contenedor de cartas, jugadores, turnos, etc. -->
+  </div>
+
+  <!-- Tu script principal -->
+  <script src="script.js"></script>
+  <script>
+    // Conexión WebSocket al servidor
+    const socket = new WebSocket(`ws://${location.host}`);
+
+    socket.addEventListener('open', () => {
+      console.log('Connectat al servidor WebSocket!');
+    });
+
+    socket.addEventListener('message', (event) => {
+      const data = JSON.parse(event.data);
+      console.log('Missatge rebut:', data);
+      // Aquí puedes manejar la lógica para actualizar la UI según los mensajes del servidor
+    });
+
+    socket.addEventListener('close', () => {
+      console.log('Desconnectat del servidor!');
+    });
+  </script>
 </body>
 </html>
