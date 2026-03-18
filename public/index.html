@@ -1,57 +1,598 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mala Influència</title>
-  <!-- Si tienes CSS, colócalo aquí -->
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      font-family: sans-serif;
-      background-color: #121212;
-      color: #fff;
-      margin: 0;
-      padding: 0;
-    }
-    #app {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-      padding: 1rem;
-    }
-    h1 { margin-bottom: 1rem; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MALA INFLUENCIA</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0d0b09; --surface:#181410; --card-bg:#1c1814;
+  --gold:#c9a84c; --gold-light:#e8c96a;
+  --red:#b83228; --red-light:#e05040;
+  --blue:#2471a3; --blue-light:#5dade2;
+  --purple:#7d3c98; --purple-light:#bb8fce;
+  --green:#1e8449; --green-light:#58d68d;
+  --text:#f0ebe3; --text-muted:#7a7060; --border:#28231d;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;position:relative}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 70% 50% at 15% 0%,rgba(201,168,76,.06) 0%,transparent 60%),
+             radial-gradient(ellipse 50% 60% at 85% 100%,rgba(192,57,43,.05) 0%,transparent 60%)}
+
+.screen{display:none;flex-direction:column;height:100vh;overflow:hidden;position:relative;z-index:1}
+.screen.active{display:flex}
+
+/* HOME */
+#home{align-items:center;justify-content:center;padding:40px 24px}
+.logo-area{text-align:center;margin-bottom:52px}
+.logo-suit{font-size:52px;display:block;margin-bottom:16px;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.logo-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,16vw,88px);letter-spacing:5px;line-height:.88;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 50%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-sub{font-family:'Playfair Display',serif;font-style:italic;color:var(--text-muted);font-size:13px;letter-spacing:2px;margin-top:10px}
+.home-actions{width:100%;max-width:340px;display:flex;flex-direction:column;gap:12px}
+
+/* BUTTONS */
+.btn{width:100%;padding:18px 24px;border:none;border-radius:14px;font-family:'DM Sans',sans-serif;
+  font-size:16px;font-weight:600;cursor:pointer;transition:transform .15s;letter-spacing:.3px}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,#a07818,var(--gold-light),#a07818);background-size:200%;background-position:right;
+  color:#120e00;box-shadow:0 4px 28px rgba(201,168,76,.25)}
+.btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.btn-ghost{background:transparent;color:var(--text-muted);font-size:14px;font-weight:400}
+.btn-sm{padding:12px 20px;font-size:14px;border-radius:10px}
+
+.top-bar{padding:20px 20px 0;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.back-btn{width:40px;height:40px;border-radius:10px;background:var(--surface);border:1px solid var(--border);
+  color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.screen-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--gold)}
+
+.input-group{display:flex;flex-direction:column;gap:8px}
+.input-label{font-size:11px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase}
+.input-field{background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:16px 18px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;outline:none;
+  transition:border-color .2s;width:100%}
+.input-field:focus{border-color:var(--gold)}
+.input-field.code{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:10px;text-align:center;text-transform:uppercase}
+
+/* SETUP */
+.setup-body{flex:1;display:flex;flex-direction:column;gap:20px;justify-content:center;padding:0 24px 40px}
+
+/* LOBBY */
+.lobby-body{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:20px}
+.room-code-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;text-align:center;cursor:pointer}
+.room-code-label{font-size:11px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.room-code{font-family:'Bebas Neue',sans-serif;font-size:60px;letter-spacing:12px;color:var(--gold);line-height:1;margin-bottom:8px}
+.copy-hint{font-size:12px;color:var(--text-muted)}
+.section-label{font-size:11px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.players-list{display:flex;flex-direction:column;gap:8px}
+.player-item{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:13px 16px;animation:slideIn .3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+.player-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.player-name{font-weight:500;font-size:15px}
+.player-badge{font-size:11px;color:var(--gold);background:rgba(201,168,76,.1);padding:3px 10px;border-radius:20px;margin-left:auto}
+.lobby-footer{padding:16px 20px 32px;flex-shrink:0}
+
+/* JOIN */
+.join-body{flex:1;display:flex;flex-direction:column;gap:20px;justify-content:center;padding:0 24px 40px}
+
+/* GAME */
+.game-header{padding:18px 20px 0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.turn-info{display:flex;flex-direction:column}
+.turn-label{font-size:11px;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase}
+.turn-name{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--gold);letter-spacing:1px;line-height:1.1}
+.round-pill{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--text-muted);white-space:nowrap}
+.round-pill span{color:var(--gold);font-weight:600}
+
+.players-strip{padding:14px 20px 0;display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.players-strip::-webkit-scrollbar{display:none}
+.strip-player{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0}
+.strip-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:19px;border:2.5px solid transparent;transition:all .3s}
+.strip-avatar.active{border-color:var(--gold);box-shadow:0 0 14px rgba(201,168,76,.35)}
+.strip-name{font-size:10px;color:var(--text-muted);max-width:46px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.card-area{flex:1;display:flex;align-items:center;justify-content:center;padding:16px 24px 0;perspective:1000px;min-height:0}
+.card-stack{position:relative;width:min(300px,86vw);height:min(400px,52vh);cursor:pointer}
+.card-ghost{position:absolute;inset:0;border-radius:22px;background:var(--card-bg);border:1px solid var(--border)}
+.card-ghost:nth-child(1){transform:rotate(-3.5deg) translateY(5px);opacity:.35}
+.card-ghost:nth-child(2){transform:rotate(2deg) translateY(3px);opacity:.55}
+.card-main{position:absolute;inset:0;border-radius:22px;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.4,0,.2,1)}
+.card-main.flipped{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;border-radius:22px;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 22px}
+
+.card-back{background:var(--card-bg);border:1px solid var(--border);overflow:hidden}
+.card-back::before{content:'';position:absolute;inset:14px;border:1px solid rgba(201,168,76,.18);border-radius:14px}
+.card-back-grid{position:absolute;inset:0;
+  background-image:repeating-linear-gradient(45deg,rgba(201,168,76,.025) 0,rgba(201,168,76,.025) 1px,transparent 1px,transparent 18px),
+  repeating-linear-gradient(-45deg,rgba(201,168,76,.025) 0,rgba(201,168,76,.025) 1px,transparent 1px,transparent 18px)}
+.card-back-text{font-family:'Bebas Neue',sans-serif;font-size:30px;color:rgba(201,168,76,.25);letter-spacing:3px;text-align:center;line-height:1.2;z-index:1}
+
+.card-front{transform:rotateY(180deg);gap:14px}
+.card-front.reto  {background:linear-gradient(155deg,#1a0d0b,#1c1814);border:1px solid rgba(184,50,40,.35)}
+.card-front.verdad{background:linear-gradient(155deg,#091420,#1c1814);border:1px solid rgba(36,113,163,.35)}
+.card-front.voto  {background:linear-gradient(155deg,#130d1c,#1c1814);border:1px solid rgba(125,60,152,.35)}
+.card-front.grupo {background:linear-gradient(155deg,#091608,#1c1814);border:1px solid rgba(30,132,73,.35)}
+
+.card-badge{position:absolute;top:18px;left:18px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:20px}
+.badge-reto  {background:rgba(184,50,40,.18);color:var(--red-light)}
+.badge-verdad{background:rgba(36,113,163,.18);color:var(--blue-light)}
+.badge-voto  {background:rgba(125,60,152,.18);color:var(--purple-light)}
+.badge-grupo {background:rgba(30,132,73,.18);color:var(--green-light)}
+
+.card-emoji{font-size:50px;line-height:1}
+.card-text{font-size:clamp(13px,3.8vw,17px);text-align:center;line-height:1.55;color:var(--text);max-width:250px}
+.card-drink{font-size:12px;font-weight:600;padding:7px 16px;border-radius:20px;
+  background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.2);
+  text-align:center;max-width:245px;line-height:1.4;display:none}
+
+.tap-hint{text-align:center;font-size:13px;color:var(--text-muted);padding:12px 0 0;flex-shrink:0;animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.45}50%{opacity:1}}
+
+.action-area{padding:10px 20px 24px;display:flex;flex-direction:column;gap:9px;flex-shrink:0}
+
+.vote-panel{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px;display:none;flex-direction:column;gap:10px}
+.vote-panel.active{display:flex}
+.vote-title{font-size:13px;font-weight:600;text-align:center;color:var(--text-muted)}
+.vote-options{display:flex;flex-direction:column;gap:6px}
+.vote-opt{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.03);
+  border:1px solid var(--border);border-radius:11px;padding:10px 14px;cursor:pointer;transition:all .18s;font-size:13px}
+.vote-opt:active{transform:scale(.98)}
+.vote-opt.selected{border-color:var(--gold);background:rgba(201,168,76,.07)}
+.vote-bar-wrap{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.vote-bar-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .6s ease;width:0%}
+
+.timer-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 0;display:none}
+.timer-ring{position:relative;width:68px;height:68px}
+.timer-ring svg{transform:rotate(-90deg)}
+.timer-ring circle{fill:none;stroke-width:5}
+.t-bg{stroke:var(--border)}
+.t-fg{stroke:var(--green-light);stroke-dasharray:200;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear;stroke-linecap:round}
+.timer-n{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--green-light)}
+.timer-desc{font-size:12px;color:var(--text-muted);text-align:center}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);
+  background:#252017;border:1px solid var(--border);border-radius:14px;
+  padding:12px 22px;font-size:14px;font-weight:500;z-index:200;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* RESULT */
+#result{align-items:center;justify-content:center;gap:18px;padding:32px 24px;overflow-y:auto}
+.result-emoji{font-size:68px;animation:pop .4s ease}
+@keyframes pop{0%{transform:scale(.5)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+.result-title{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:3px;text-align:center;
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.result-sub{font-size:14px;color:var(--text-muted);text-align:center;max-width:280px}
+.podium{width:100%;max-width:340px;display:flex;flex-direction:column;gap:8px}
+.podium-item{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 16px}
+.podium-num{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text-muted);width:22px;text-align:center}
+.podium-num.g{color:var(--gold)}
+.podium-drinks{margin-left:auto;font-size:12px;color:var(--text-muted)}
+.result-actions{width:100%;max-width:340px;display:flex;flex-direction:column;gap:10px}
+</style>
 </head>
 <body>
-  <div id="app">
-    <h1>🃏 Mala Influència</h1>
-    <p>Carregant el joc...</p>
-    <!-- Aquí puedes agregar el contenedor de cartas, jugadores, turnos, etc. -->
+
+<!-- HOME -->
+<div id="home" class="screen active">
+  <div class="logo-area">
+    <span class="logo-suit">🃏</span>
+    <div class="logo-title">MALA<br>INFLUENCIA</div>
+    <div class="logo-sub">el juego de los que se conocen demasiado</div>
+  </div>
+  <div class="home-actions">
+    <button class="btn btn-primary" onclick="goSetup('create')">Crear sala</button>
+    <button class="btn btn-secondary" onclick="goSetup('join')">Unirse a sala</button>
+  </div>
+</div>
+
+<!-- SETUP -->
+<div id="setup" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="showScreen('home')">←</button>
+    <div class="screen-title">Tu nombre</div>
+  </div>
+  <div class="setup-body">
+    <div class="input-group">
+      <label class="input-label">¿Cómo te llaman?</label>
+      <input class="input-field" id="nameInput" type="text" placeholder="Tu nombre..." maxlength="14" autocomplete="off" autocorrect="off">
+    </div>
+    <button class="btn btn-primary" onclick="setupNext()">Continuar →</button>
+  </div>
+</div>
+
+<!-- LOBBY -->
+<div id="lobby" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="showScreen('home')">←</button>
+    <div class="screen-title">Sala</div>
+  </div>
+  <div class="lobby-body">
+    <div class="room-code-box" onclick="copyCode()">
+      <div class="room-code-label">Código de sala — toca para copiar</div>
+      <div class="room-code" id="roomCode">----</div>
+      <div class="copy-hint">Comparte el código con tus amigos 🍻</div>
+    </div>
+    <div>
+      <div class="section-label">Jugadores</div>
+      <div class="players-list" id="lobbyPlayers"></div>
+    </div>
+  </div>
+  <div class="lobby-footer">
+    <button class="btn btn-primary" onclick="startGame()">¡Empezar! 🎉</button>
+  </div>
+</div>
+
+<!-- JOIN -->
+<div id="join" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="showScreen('home')">←</button>
+    <div class="screen-title">Unirse</div>
+  </div>
+  <div class="join-body">
+    <div class="input-group">
+      <label class="input-label">Código de sala</label>
+      <input class="input-field code" id="joinCodeInput" type="text" placeholder="0000" maxlength="4" autocomplete="off" inputmode="numeric">
+    </div>
+    <button class="btn btn-primary" onclick="joinRoom()">Entrar →</button>
+  </div>
+</div>
+
+<!-- GAME -->
+<div id="game" class="screen">
+  <div class="game-header">
+    <div class="turn-info">
+      <span class="turn-label">Le toca a</span>
+      <span class="turn-name" id="turnName">—</span>
+    </div>
+    <div class="round-pill">Ronda <span id="roundNum">1</span></div>
   </div>
 
-  <!-- Tu script principal -->
-  <script src="script.js"></script>
-  <script>
-    // Conexión WebSocket al servidor
-    const socket = new WebSocket(`ws://${location.host}`);
+  <div class="players-strip" id="playersStrip"></div>
 
-    socket.addEventListener('open', () => {
-      console.log('Connectat al servidor WebSocket!');
-    });
+  <div class="card-area">
+    <div class="card-stack" onclick="flipCard()">
+      <div class="card-ghost"></div>
+      <div class="card-ghost"></div>
+      <div class="card-main" id="cardMain">
+        <div class="card-face card-back">
+          <div class="card-back-grid"></div>
+          <div class="card-back-text">MALA<br>INFLUENCIA</div>
+        </div>
+        <div class="card-face card-front" id="cardFront">
+          <div class="card-badge" id="cardBadge"></div>
+          <div class="card-emoji" id="cardEmoji"></div>
+          <div class="card-text" id="cardText"></div>
+          <div class="card-drink" id="cardDrink"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    socket.addEventListener('message', (event) => {
-      const data = JSON.parse(event.data);
-      console.log('Missatge rebut:', data);
-      // Aquí puedes manejar la lógica para actualizar la UI según los mensajes del servidor
-    });
+  <div class="tap-hint" id="tapHint">✦ Toca la carta para descubrir ✦</div>
 
-    socket.addEventListener('close', () => {
-      console.log('Desconnectat del servidor!');
-    });
-  </script>
+  <div class="action-area" id="actionArea">
+    <div class="vote-panel" id="votePanel">
+      <div class="vote-title" id="voteQ"></div>
+      <div class="vote-options" id="voteOpts"></div>
+      <button class="btn btn-secondary btn-sm" id="voteRevBtn" onclick="revealVotes()" style="display:none">Ver resultados 🗳️</button>
+    </div>
+    <div class="timer-wrap" id="timerWrap">
+      <div class="timer-ring">
+        <svg width="68" height="68" viewBox="0 0 68 68">
+          <circle class="t-bg" cx="34" cy="34" r="29"/>
+          <circle class="t-fg" id="tFg" cx="34" cy="34" r="29"/>
+        </svg>
+        <div class="timer-n" id="tNum">30</div>
+      </div>
+      <div class="timer-desc" id="tDesc"></div>
+    </div>
+    <button class="btn btn-primary" id="nextBtn" onclick="nextTurn()" style="display:none">Siguiente turno →</button>
+    <button class="btn btn-ghost btn-sm" id="skipBtn" onclick="nextTurn()" style="display:none">Saltar carta</button>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="result" class="screen">
+  <div class="result-emoji" id="resultEmoji">🏆</div>
+  <div class="result-title" id="resultTitle">¡Fin!</div>
+  <div class="result-sub" id="resultSub"></div>
+  <div class="podium" id="podiumList"></div>
+  <div class="result-actions">
+    <button class="btn btn-primary" onclick="playAgain()">Otra ronda 🔄</button>
+    <button class="btn btn-ghost" onclick="showScreen('home')">Salir al inicio</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const DECK = [
+  // RETOS (20)
+  {t:'reto',e:'🕺',txt:'Baila 20 segundos solo con la parte superior del cuerpo.',drink:'Bebes si el grupo no aplaude.',timer:20},
+  {t:'reto',e:'🤳',txt:'Cambia tu foto de perfil de WhatsApp por la que elija el grupo. Mínimo 15 minutos.',drink:'Si te niegas, bebes doble.'},
+  {t:'reto',e:'🎤',txt:'Canta el estribillo de una canción que elija el jugador de tu derecha.',drink:'Si no la sabes, bebe y canta de todos modos.'},
+  {t:'reto',e:'🤸',txt:'Haz 15 sentadillas seguidas sin parar.',drink:'Si paras antes de terminar, bebes doble.'},
+  {t:'reto',e:'💬',txt:'Manda un mensaje raro a alguien de tus contactos que elija el grupo.',drink:'Si te niegas, bebes y muestras el chat igualmente.'},
+  {t:'reto',e:'🤐',txt:'No puedes hablar durante 3 minutos. Solo gestos.',drink:'Cada vez que hables sin querer, un sorbo.'},
+  {t:'reto',e:'🦆',txt:'Camina como un pato de un lado al otro de la sala dos veces.',drink:'Si te ríes antes de terminar, bebes.'},
+  {t:'reto',e:'🎭',txt:'Haz un monólogo de 30 segundos sobre un tema que elija el grupo.',drink:'Si te quedas en blanco más de 5 segundos, bebes.',timer:30},
+  {t:'reto',e:'🧊',txt:'Pon el hielo de tu bebida encima de la cabeza y aguanta 10 segundos.',drink:'Si no aguantas los 10 segundos, bebes doble.'},
+  {t:'reto',e:'📸',txt:'El grupo te hace una foto en la pose que elijan. Esa foto es tu fondo de pantalla 10 minutos.',drink:'Si te niegas, bebes.'},
+  {t:'reto',e:'👁️',txt:'Mira fijamente a los ojos al jugador que elijas sin reír durante 30 segundos.',drink:'El que ría primero, bebe. Si ambos aguantan, se libran.'},
+  {t:'reto',e:'🤜',txt:'Choca el puño con cada persona del grupo diciéndoles algo genuino y positivo.',drink:'Si repites un cumplido o suena falso, el grupo vota y bebes.'},
+  {t:'reto',e:'📞',txt:'Llama a alguien que no esté aquí y cántale Cumpleaños Feliz. No es su cumpleaños.',drink:'Si cuelgas antes de terminar, bebes doble.'},
+  {t:'reto',e:'🥄',txt:'Come un hielo entero de tu bebida sin tocarlo con las manos.',drink:'Si usas las manos, bebes.'},
+  {t:'reto',e:'🎯',txt:'Lanza un hielo intentando meter en el vaso de otro jugador. Tres intentos.',drink:'Si no metes ninguno, bebes.'},
+  {t:'reto',e:'🪑',txt:'Siéntate en el regazo de alguien que elija el grupo durante el siguiente turno entero.',drink:'Si te niegas, bebes.'},
+  {t:'reto',e:'🙃',txt:'Di tres frases seguidas con las palabras en orden invertido.',drink:'Cada error, un sorbo.'},
+  {t:'reto',e:'🤫',txt:'Susurra al oído del jugador de tu izquierda algo que nunca hayas contado aquí.',drink:'Si el grupo convence al jugador de revelarlo en 30 segundos, bebes.'},
+  {t:'reto',e:'🦵',txt:'Haz el floss durante 15 segundos. No vale excusarse.',drink:'Si paras o te caes, bebes.'},
+  {t:'reto',e:'🎪',txt:'Imita a alguien famoso durante 30 segundos. El grupo tiene que adivinar quién es.',drink:'Si nadie adivina, bebes.',timer:30},
+
+  // VERDAD (18)
+  {t:'verdad',e:'💭',txt:'¿Cuál es la mentira más grande que has dicho a alguien de este grupo?',drink:'Si te niegas a responder, bebes doble.'},
+  {t:'verdad',e:'😬',txt:'¿Cuál es la cosa más vergonzosa que te ha pasado en los últimos 6 meses?',drink:'Si la historia dura menos de 20 segundos, bebes (no te estás esforzando).'},
+  {t:'verdad',e:'❤️',txt:'¿Con quién de este grupo te irías de viaje solo y por qué? Tienes que nombrar a alguien.',drink:'Si no nombras a nadie, bebes.'},
+  {t:'verdad',e:'🔥',txt:'¿Cuál es tu mayor obsesión secreta que crees que nadie aquí sabe?',drink:'Si el grupo ya lo sabía, beben todos por haberlo descubierto antes.'},
+  {t:'verdad',e:'💸',txt:'¿Cuánto dinero llevas ahora mismo encima o en cuenta? Sé específico.',drink:'Si no lo dices, bebes. Si mientes y alguien te pilla, bebes doble.'},
+  {t:'verdad',e:'🌙',txt:'¿Cuál ha sido la peor decisión que has tomado este año?',drink:'Si te justificas más de 20 segundos en vez de reconocerlo, bebes.'},
+  {t:'verdad',e:'🤥',txt:'¿Cuál es la excusa más ridícula que has usado para no quedar con alguien?',drink:'Si el grupo vota que no es tan ridícula, te libras. Si votan que sí, bebes.'},
+  {t:'verdad',e:'📲',txt:'Lee en voz alta el último mensaje que has enviado a alguien que te gustaba o a tu ex.',drink:'Si no tienes o no quieres leerlo, bebes doble.'},
+  {t:'verdad',e:'👀',txt:'¿A quién de este grupo le has contado algo que nunca debías haber contado?',drink:'Si la persona implicada está aquí y reacciona, bebes.'},
+  {t:'verdad',e:'🍿',txt:'¿Cuál es tu guilty pleasure más cutre que nunca reconocerías fuera de esta sala?',drink:'Si el grupo ya lo sabía, tú y quien lo sabía bebéis juntos.'},
+  {t:'verdad',e:'🕵️',txt:'¿Cuál es el cotilleo más gordo que sabes sobre alguien que no está aquí?',drink:'Si te niegas, bebes. Si lo cuentas, todos beben de emoción.'},
+  {t:'verdad',e:'💔',txt:'¿Cuál fue el momento exacto en que dejaste de querer a alguien que querías?',drink:'Si lloras o casi lloras, el grupo bebe por ti de pena ajena.'},
+  {t:'verdad',e:'🧠',txt:'¿Qué pensabas de alguien de este grupo cuando lo conociste versus ahora? Nombra a alguien concreto.',drink:'Si no nombras a nadie, bebes.'},
+  {t:'verdad',e:'🌶️',txt:'¿Cuál es la situación más incómoda en la que te has visto por ligar con alguien?',drink:'Si no has tenido ninguna situación incómoda... bebes de pena.'},
+  {t:'verdad',e:'🪞',txt:'¿Qué es lo que más te cuesta reconocer de ti mismo?',drink:'Si la respuesta dura menos de 15 segundos, bebes: ve más al fondo.'},
+  {t:'verdad',e:'🏆',txt:'¿De qué cosa estás más orgulloso que nadie de este grupo conoce todavía?',drink:'Si el grupo ya lo sabía, bebéis todos de celebración.'},
+  {t:'verdad',e:'🌊',txt:'¿Qué es lo que más envidia sana te da de alguien de este grupo? Nombra a quién.',drink:'Si no nombras a nadie, bebes.'},
+  {t:'verdad',e:'🎭',txt:'¿Cuál es el mayor papel que has interpretado en tu vida para impresionar a alguien?',drink:'Si el grupo vota que lo sigues haciendo, bebes.'},
+
+  // VOTACIÓN (18)
+  {t:'voto',e:'🎬',txt:'¿Quién del grupo sería el primero en morir en una película de terror?',drink:'El más votado bebe.',voteQ:'¿Quién muere primero?'},
+  {t:'voto',e:'👑',txt:'¿Quién manda de verdad en este grupo sin que nadie lo admita?',drink:'El más votado bebe por el poder que tiene.',voteQ:'¿Quién manda realmente?'},
+  {t:'voto',e:'🤥',txt:'¿Quién exagera más las historias que cuenta?',drink:'El más votado bebe y tiene que contar una historia ahora mismo.',voteQ:'¿Quién exagera más?'},
+  {t:'voto',e:'💤',txt:'¿Quién sería el primero en dormirse en una noche de fiesta?',drink:'El más votado bebe doble por la vergüenza.',voteQ:'¿Quién se duerme antes?'},
+  {t:'voto',e:'🍕',txt:'¿Quién sería el peor compañero de piso?',drink:'El más votado bebe y acepta el veredicto en silencio.',voteQ:'¿Quién sería peor compañero?'},
+  {t:'voto',e:'💘',txt:'¿Quién tiene más drama amoroso actualmente aunque diga que no?',drink:'El más votado bebe y puede negarlo (pero bebe igual).',voteQ:'¿Quién tiene más drama amoroso?'},
+  {t:'voto',e:'🧳',txt:'¿Quién haría las maletas y se largaba a vivir a otro país mañana mismo?',drink:'El más votado bebe. Si es verdad, bebe doble.',voteQ:'¿Quién se larga a otro país?'},
+  {t:'voto',e:'🤓',txt:'¿Quién se cree el más listo del grupo sin serlo necesariamente?',drink:'El más votado bebe. El que votó en blanco también.',voteQ:'¿Quién se cree el más listo?'},
+  {t:'voto',e:'🚀',txt:'¿Quién triunfará más en 10 años?',drink:'El más votado invita a la próxima ronda de bebidas (o bebe si no puede).',voteQ:'¿Quién triunfará en 10 años?'},
+  {t:'voto',e:'🌪️',txt:'¿Quién monta más drama cuando las cosas no salen como quiere?',drink:'El más votado bebe. Si protesta, bebe más.',voteQ:'¿Quién monta más drama?'},
+  {t:'voto',e:'📵',txt:'¿Quién es el más adicto al móvil aunque diga lo contrario?',drink:'El más votado deja el móvil boca abajo 10 minutos o bebe doble.',voteQ:'¿Quién es más adicto al móvil?'},
+  {t:'voto',e:'🧊',txt:'¿Quién tiene menos filtro y dice lo que piensa aunque nadie se lo haya pedido?',drink:'El más votado bebe y hace una confesión sin filtro ahora mismo.',voteQ:'¿Quién tiene menos filtro?'},
+  {t:'voto',e:'🦋',txt:'¿Quién ha cambiado más desde que os conocéis?',drink:'El más votado bebe y cuenta en qué ha cambiado.',voteQ:'¿Quién ha cambiado más?'},
+  {t:'voto',e:'🍀',txt:'¿Quién tiene más suerte sin hacer nada para merecerla?',drink:'El más votado bebe. No hay apelación.',voteQ:'¿Quién tiene más suerte sin merecerla?'},
+  {t:'voto',e:'😈',txt:'¿Quién convencería a los demás para hacer algo que todos saben que es mala idea?',drink:'El más votado bebe y propone algo ahora mismo.',voteQ:'¿Quién convence para las malas ideas?'},
+  {t:'voto',e:'🥂',txt:'¿Quién seguirá de fiesta cuando todos los demás ya estén en casa?',drink:'El más votado bebe doble porque le queda mucha noche.',voteQ:'¿Quién aguanta más la noche?'},
+  {t:'voto',e:'🎭',txt:'¿Quién pone más cara de palo en las fotos del grupo?',drink:'El más votado tiene que hacerse una foto horrible ahora mismo.',voteQ:'¿Quién pone peor cara en fotos?'},
+  {t:'voto',e:'🌶️',txt:'¿Quién ha tenido más rollos de una noche en su vida?',drink:'El más votado bebe. Si confiesa que el grupo se ha equivocado, bebe el grupo.',voteQ:'¿Quién ha tenido más rollos de una noche?'},
+
+  // GRUPO (16)
+  {t:'grupo',e:'⚡',txt:'TODOS: Piedra, papel o tijera. Eliminatoria hasta que quede uno. El que pierde cada ronda bebe un sorbo.',drink:'El ganador final reparte un sorbo extra a quien quiera.'},
+  {t:'grupo',e:'🔥',txt:'Ronda de "Yo nunca". Cada jugador dice algo que nunca ha hecho. Quien lo haya hecho, bebe.',drink:'El que más beba en esta ronda tiene que justificarse.'},
+  {t:'grupo',e:'⏱️',txt:'Reto: todos hablan a la vez durante 30 segundos sobre el mismo tema sin escucharse. El que ría o pare, bebe.',drink:'Tema elegido por quien sacó la carta.',timer:30},
+  {t:'grupo',e:'🌀',txt:'Todos de pie. El último en sentarse cuando el jugador actual grite "AHORA" bebe doble.',drink:'El que anticipe el "AHORA" antes de tiempo también bebe.'},
+  {t:'grupo',e:'🎵',txt:'Adivina la canción: el jugador actual tararea una canción. El primero en adivinar reparte un sorbo.',drink:'Si nadie adivina en 30 segundos, el que tararee bebe.',timer:30},
+  {t:'grupo',e:'🧩',txt:'Historia colectiva: cada uno añade UNA frase en orden. La historia debe tener sentido durante 2 minutos.',drink:'Quien rompa el hilo de la historia, bebe.',timer:120},
+  {t:'grupo',e:'🤝',txt:'Sincronización: todos tienen que decir al mismo tiempo la misma palabra espontánea. Tres intentos.',drink:'Si en tres intentos no lo lográis, todos beben.'},
+  {t:'grupo',e:'🫵',txt:'El jugador actual señala a alguien y dice una verdad sobre esa persona. Esa persona decide si es cierto.',drink:'Si miente y el grupo lo sabe, bebe. Si es una verdad incómoda, bebe el señalado.'},
+  {t:'grupo',e:'🥊',txt:'Duelo de mímica: dos jugadores se enfrentan. El grupo les da un tema y cada uno lo actúa 20 segundos. El grupo vota al mejor.',drink:'El perdedor del duelo bebe.',timer:20},
+  {t:'grupo',e:'🎲',txt:'El jugador actual elige un número del 1 al 10. Cada jugador lo escribe en secreto en su móvil. Los que coincidan, se libran.',drink:'Los que no coincidan con el número elegido, beben.'},
+  {t:'grupo',e:'🧠',txt:'El jugador actual hace una pregunta de cultura general al grupo. El primero en responder bien reparte un sorbo.',drink:'Si nadie sabe la respuesta, el que preguntó bebe. Nada de buscar en Google.'},
+  {t:'grupo',e:'🌶️',txt:'Picante o suave: cada jugador elige en silencio. "Suave" = beber ahora. "Picante" = confesar algo comprometido.',drink:'No hay término medio. Todo el mundo elige.'},
+  {t:'grupo',e:'🎪',txt:'Cadena de instrucciones absurdas: cada jugador añade una acción a la lista. Hay que recordar y hacer todas las anteriores.',drink:'Quien se equivoque o olvide una acción, bebe.'},
+  {t:'grupo',e:'🌟',txt:'Brindis obligatorio: cada jugador hace un brindis sincero dirigido a otro jugador específico del grupo.',drink:'Si el brindis suena falso y el grupo vota que sí, el que brindó bebe.'},
+  {t:'grupo',e:'📢',txt:'El jugador actual lee un mensaje antiguo de un chat grupal de forma dramática. El grupo adivina el contexto.',drink:'Si nadie adivina el contexto real, el que leyó bebe.'},
+  {t:'grupo',e:'🪩',txt:'Votación rápida: ¿cuál ha sido el momento más épico de esta noche? Cada uno propone uno, el grupo vota.',drink:'El que proponga el momento con menos votos, bebe de pena.'},
+];
+
+const AVATARS=['🦊','🐻','🐼','🦁','🐯','🐸','🦋','🦄','🐺','🦝','🐙','🦖','🐨','🦔','🐬'];
+const COLORS=['#c0392b','#2471a3','#1e8449','#7d3c98','#ca6f1e','#0e6655','#943126','#1a5276'];
+
+let G={mode:'create',myName:'',code:'',players:[],turn:0,round:1,flipped:false,card:null,drinks:{},used:new Set(),timerID:null,myVote:null};
+
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function toast(msg,ms=2400){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),ms)}
+function rand(arr){return arr[Math.floor(Math.random()*arr.length)]}
+function genCode(){return String(Math.floor(1000+Math.random()*9000))}
+
+function pickCard(){
+  const avail=DECK.map((_,i)=>i).filter(i=>!G.used.has(i));
+  if(!avail.length){G.used.clear();return pickCard()}
+  const idx=avail[Math.floor(Math.random()*avail.length)];
+  G.used.add(idx);return DECK[idx];
+}
+
+function goSetup(mode){G.mode=mode;showScreen('setup');setTimeout(()=>document.getElementById('nameInput').focus(),300)}
+
+function setupNext(){
+  const name=document.getElementById('nameInput').value.trim();
+  if(!name){toast('Escribe tu nombre primero 😅');return}
+  G.myName=name;
+  if(G.mode==='create')createRoom();else showScreen('join');
+}
+
+function createRoom(){
+  G.code=genCode();
+  G.players=[{name:G.myName,avatar:rand(AVATARS),color:COLORS[0],host:true}];
+  G.drinks={[G.myName]:0};
+  document.getElementById('roomCode').textContent=G.code;
+  renderLobby();showScreen('lobby');simulateJoins();
+}
+
+function simulateJoins(){
+  const fakes=[{name:'Lucía',avatar:'🦋'},{name:'Marc',avatar:'🐺'},{name:'Sofía',avatar:'🦄'},{name:'Rafa',avatar:'🐨'}];
+  fakes.forEach((p,i)=>{
+    setTimeout(()=>{
+      G.players.push({name:p.name,avatar:p.avatar,color:COLORS[i+1],host:false});
+      G.drinks[p.name]=0;renderLobby();toast(`${p.name} se ha unido 🎉`);
+    },(i+1)*1600);
+  });
+}
+
+function renderLobby(){
+  document.getElementById('lobbyPlayers').innerHTML=G.players.map((p,i)=>`
+    <div class="player-item">
+      <div class="player-avatar" style="background:${p.color}22">${p.avatar}</div>
+      <div class="player-name">${p.name}</div>
+      ${p.host?'<div class="player-badge">HOST</div>':''}
+    </div>`).join('');
+}
+
+function copyCode(){navigator.clipboard?.writeText(G.code).catch(()=>{});toast(`Código copiado: ${G.code} 📋`)}
+
+function joinRoom(){
+  const code=document.getElementById('joinCodeInput').value.trim();
+  if(code.length<4){toast('Introduce el código de 4 dígitos');return}
+  G.code=code;
+  G.players=[{name:'Carlos',avatar:'🦊',color:COLORS[0],host:true},{name:G.myName,avatar:rand(AVATARS),color:COLORS[1],host:false},{name:'Ana',avatar:'🐸',color:COLORS[2],host:false},{name:'Javi',avatar:'🐻',color:COLORS[3],host:false}];
+  G.players.forEach(p=>G.drinks[p.name]=0);
+  toast('¡Conectado! 🙌');startGame();
+}
+
+function startGame(){
+  G.turn=0;G.round=1;G.used.clear();
+  G.players.forEach(p=>G.drinks[p.name]=0);
+  buildStrip();updateTurnUI();showScreen('game');
+}
+
+function buildStrip(){
+  document.getElementById('playersStrip').innerHTML=G.players.map((p,i)=>`
+    <div class="strip-player">
+      <div class="strip-avatar ${i===G.turn?'active':''}" id="sa${i}" style="background:${p.color}22">${p.avatar}</div>
+      <div class="strip-name">${p.name}</div>
+    </div>`).join('');
+}
+
+function updateTurnUI(){
+  document.getElementById('turnName').textContent=G.players[G.turn].name;
+  document.getElementById('roundNum').textContent=G.round;
+  document.querySelectorAll('.strip-avatar').forEach((el,i)=>el.classList.toggle('active',i===G.turn));
+  resetCard();
+}
+
+function resetCard(){
+  clearInterval(G.timerID);
+  G.flipped=false;G.card=null;G.myVote=null;
+  const cm=document.getElementById('cardMain');
+  cm.style.transition='none';cm.classList.remove('flipped');
+  setTimeout(()=>cm.style.transition='',30);
+  document.getElementById('tapHint').style.display='block';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('skipBtn').style.display='none';
+  document.getElementById('votePanel').classList.remove('active');
+  document.getElementById('timerWrap').style.display='none';
+  document.getElementById('cardDrink').style.display='none';
+}
+
+function flipCard(){
+  if(G.flipped)return;
+  G.flipped=true;
+  const card=pickCard();G.card=card;
+  const cf=document.getElementById('cardFront');
+  cf.className='card-face card-front '+card.t;
+  const bl={reto:'badge-reto',verdad:'badge-verdad',voto:'badge-voto',grupo:'badge-grupo'};
+  const ll={reto:'Reto',verdad:'Verdad',voto:'Votación',grupo:'Grupo'};
+  document.getElementById('cardBadge').className='card-badge '+bl[card.t];
+  document.getElementById('cardBadge').textContent=ll[card.t];
+  document.getElementById('cardEmoji').textContent=card.e;
+  document.getElementById('cardText').textContent=card.txt;
+  const de=document.getElementById('cardDrink');de.textContent=card.drink;de.style.display='block';
+  document.getElementById('cardMain').classList.add('flipped');
+  document.getElementById('tapHint').style.display='none';
+  setTimeout(()=>{
+    if(card.t==='voto')showVotePanel(card);
+    else{if(card.timer)showTimer(card.timer);showNextBtn();}
+  },750);
+}
+
+function showNextBtn(){document.getElementById('nextBtn').style.display='block';document.getElementById('skipBtn').style.display='block'}
+
+function showVotePanel(card){
+  const panel=document.getElementById('votePanel');
+  document.getElementById('voteQ').textContent=card.voteQ||'¿Quién es?';
+  G.myVote=null;
+  document.getElementById('voteOpts').innerHTML=G.players.map((p,i)=>`
+    <div class="vote-opt" id="vo${i}" onclick="castVote(${i})">
+      <span>${p.avatar}</span><span style="flex:1">${p.name}</span>
+      <div class="vote-bar-wrap"><div class="vote-bar-fill" id="vf${i}"></div></div>
+    </div>`).join('');
+  document.getElementById('voteRevBtn').style.display='none';
+  panel.classList.add('active');
+  setTimeout(()=>{document.getElementById('voteRevBtn').style.display='block'},1800);
+}
+
+function castVote(i){
+  if(G.myVote!==null)return;G.myVote=i;
+  document.querySelectorAll('.vote-opt').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('vo'+i).classList.add('selected');
+  document.getElementById('voteRevBtn').style.display='block';
+  toast('Voto registrado ✓');
+}
+
+function revealVotes(){
+  const counts=G.players.map(()=>Math.floor(Math.random()*3)+(Math.random()>.4?2:0));
+  if(G.myVote!==null)counts[G.myVote]++;
+  const total=Math.max(counts.reduce((a,b)=>a+b,0),1);
+  const winner=counts.indexOf(Math.max(...counts));
+  counts.forEach((c,i)=>{document.getElementById('vf'+i).style.width=Math.round(c/total*100)+'%'});
+  G.drinks[G.players[winner].name]=(G.drinks[G.players[winner].name]||0)+1;
+  setTimeout(()=>{toast(`${G.players[winner].avatar} ${G.players[winner].name} es el más votado — ¡bebe!`,3000);showNextBtn()},900);
+}
+
+function showTimer(secs){
+  const wrap=document.getElementById('timerWrap'),numEl=document.getElementById('tNum'),fgEl=document.getElementById('tFg'),desc=document.getElementById('tDesc');
+  const C=182;
+  wrap.style.display='flex';fgEl.style.stroke='var(--green-light)';numEl.style.color='var(--green-light)';fgEl.style.strokeDashoffset='0';
+  let t=secs;numEl.textContent=t;desc.textContent=`${t} segundos`;
+  clearInterval(G.timerID);
+  G.timerID=setInterval(()=>{
+    t--;numEl.textContent=t;desc.textContent=t>0?`${t} segundos`:'¡Tiempo!';
+    fgEl.style.strokeDashoffset=C*(1-t/secs);
+    if(t<=5){fgEl.style.stroke='var(--red-light)';numEl.style.color='var(--red-light)'}
+    if(t<=0){clearInterval(G.timerID);toast('⏱️ ¡Tiempo!')}
+  },1000);
+}
+
+function nextTurn(){
+  clearInterval(G.timerID);
+  G.turn=(G.turn+1)%G.players.length;
+  if(G.turn===0)G.round++;
+  if(G.round>10){showResult();return}
+  updateTurnUI();
+}
+
+function showResult(){
+  const sorted=[...G.players].sort((a,b)=>(G.drinks[b.name]||0)-(G.drinks[a.name]||0));
+  const winner=sorted[0];
+  document.getElementById('resultEmoji').textContent='🏆';
+  document.getElementById('resultTitle').textContent=`¡${winner.name} ganó!`;
+  document.getElementById('resultSub').textContent=`${winner.avatar} ${winner.name} se lleva la corona de esta noche`;
+  document.getElementById('podiumList').innerHTML=sorted.map((p,i)=>`
+    <div class="podium-item">
+      <div class="podium-num ${i===0?'g':''}">${i===0?'🏆':i+1}</div>
+      <div style="font-size:17px">${p.avatar}</div>
+      <div style="font-weight:500;flex:1">${p.name}</div>
+      <div class="podium-drinks">${G.drinks[p.name]||0} sorbos 🥃</div>
+    </div>`).join('');
+  showScreen('result');
+}
+
+function playAgain(){G.players.forEach(p=>G.drinks[p.name]=0);G.used.clear();startGame()}
+
+document.getElementById('nameInput').addEventListener('keydown',e=>{if(e.key==='Enter')setupNext()});
+document.getElementById('joinCodeInput').addEventListener('keydown',e=>{if(e.key==='Enter')joinRoom()});
+</script>
 </body>
 </html>
